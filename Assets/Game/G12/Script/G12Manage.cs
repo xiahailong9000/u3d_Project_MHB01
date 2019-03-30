@@ -14,6 +14,7 @@ namespace G12 {
             GetInstance = this;
         }
         void Start() {
+            Game.G12.CC_Resources.ResourcesPath.S_SetPathToDic();
             UI_SystemHints.prefabPath = "Game/G12/Resources/G12/UI/UI_SystemHints/UI_SystemHints.prefab";
             uiMain = new UI_Main();
         }
