@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using CC_Util;
 using UnityEngine;
+using System.Linq;
 
 public class C_AssetsLoad {
     public static C_AssetsLoad GetInstance {
@@ -16,10 +17,11 @@ public class C_AssetsLoad {
     }
     static C_AssetsLoad instance;
     MonoBehaviour mono;
-    public void S_GetAssets(MonoBehaviour mono, Action<Dictionary<string, int>> callback) {
+    public void S_GetAssets(MonoBehaviour mono, Action<List<Dictionary<string, int>>> callback) {
         this.mono = mono;
-        mono.StartCoroutine(I_GetAssets(callback));
+        mono.StartCoroutine(I_GetAssets2(callback));
     }
+    [Obsolete("第一版本方法")]
     IEnumerator I_GetAssets(Action<Dictionary<string, int>> callback) {
         string sourcePath = Application.dataPath + "/../FilePackage";
         Dictionary<string, int> assetsPathDic = new Dictionary<string, int>();
@@ -64,6 +66,60 @@ public class C_AssetsLoad {
         }
         if (callback != null) {
             callback(assetsPathDic);
+        }
+    }
+    IEnumerator I_GetAssets2(Action<List<Dictionary<string, int>>> callback) {
+        string sourcePath = Application.dataPath + "/../FilePackage";
+        List<Dictionary<string, int>> assetsPathDicList = new List<Dictionary<string, int>>();
+        DirectoryInfo[] directoryInfos = new DirectoryInfo(sourcePath).GetDirectories("*",SearchOption.AllDirectories);
+        for (int j = 0; j < directoryInfos.Length; j++) {
+            Dictionary<string, int> assetsPathDic = new Dictionary<string, int>();
+            FileInfo[] fileInfos = directoryInfos[j].GetFiles("*.*");
+            for (int i = 0; i < fileInfos.Length; i++) {
+                // Debug.LogFormat("____{0}____{1}___{2}", fileInfos[i].Name, fileInfos[i].Extension, fileInfos[i].FullName);
+                string extension = fileInfos[i].Extension.ToLower();
+                int ii = 0;
+                switch (extension) {
+                    case ".jpg":
+                        ii = 1;
+                        assetsPathDic[fileInfos[i].FullName] = ii;
+                        break;
+                    case ".png":
+                        ii = 2;
+                        assetsPathDic[fileInfos[i].FullName] = ii;
+                        break;
+                    case ".mp4":
+                        ii = 33;
+                        assetsPathDic[fileInfos[i].FullName] = ii;
+                        break;
+                    case ".avi":
+                        ii = 34;
+                        assetsPathDic[fileInfos[i].FullName] = ii;
+                        break;
+                }
+                if (ii == 1 || ii == 2) {
+                    if (false) {
+                        if (fileInfos[i].Length / 1024 > limitI + 5) {
+                            Debug.LogFormat("压缩____{0}__{1}__", fileInfos[i].Length / 1024, fileInfos[i].FullName);
+                            yield return mono.StartCoroutine(I_Compress(fileInfos[i].FullName, delegate (Texture2D tex) {
+                                if (tex != null) {
+                                    S_Thumbnail(fileInfos[i].FullName, tex);
+                                }
+                            }));
+                        }
+                    }
+                    if (File.Exists(fileInfos[i].FullName + ".pic") == false) {
+                        yield return mono.StartCoroutine(I_Thumbnail(fileInfos[i].FullName));
+                    }
+                }
+            }
+            if (assetsPathDic.Count > 0) {
+                assetsPathDic = assetsPathDic.OrderBy(n => n.Key).ToDictionary(n => n.Key, n => n.Value);
+                assetsPathDicList.Add(assetsPathDic);
+            }
+        }
+        if (callback != null) {
+            callback(assetsPathDicList);
         }
     }
     int limitI = 2048;

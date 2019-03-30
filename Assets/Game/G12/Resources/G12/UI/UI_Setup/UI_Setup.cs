@@ -53,7 +53,7 @@ namespace G12 {
             });
             AgreeButton.onClick.AddListener(delegate () {
                 S_Close();
-                G12Manage.GetInstance.uiMain.S_dddd();
+                G12Manage.GetInstance.uiMain.S_StartRun();
             });
             isShowAssetsPathToggle.d_SelectEvent += delegate (C_Toggle nn) {
                 C_Parameter.isShowAssetsPath.Value = nn.isSelected ? 1 : 0;
@@ -63,7 +63,7 @@ namespace G12 {
                 UI_SystemHints.GetInstance.o_HintsView.S_ShowMessage2(videoIsAllPlayToggle.transform, "切换视频播放模式", "需要重新加载场景", delegate (bool isConfirm) {
                     if (isConfirm) {
                         S_Close();
-                        G12Manage.GetInstance.uiMain.S_dddd();
+                        G12Manage.GetInstance.uiMain.S_StartRun();
                     }
                 });
             };

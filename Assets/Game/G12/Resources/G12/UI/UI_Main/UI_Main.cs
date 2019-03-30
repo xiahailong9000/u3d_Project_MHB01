@@ -29,7 +29,7 @@ namespace G12 {
         UI_Setup _uiSetup;
         public C_Parameter parameter = new C_Parameter();
         Button setupButton;
-        RectTransform selectBox, cardPrefab, boundary, load, showPathBox;
+        RectTransform selectBox, cardPrefab, boundary, load, showPathBox, previewCardFather;
         Text progress, showPathText;
         protected override void S_Init() {
             base.S_Init();
@@ -40,6 +40,7 @@ namespace G12 {
             load = GetControl<RectTransform>("load");
             progress = GetControl<Text>("progress", load);
             showPathBox = GetControl<RectTransform>("showPathBox");
+            previewCardFather = GetControl<RectTransform>("previewCardFather");
             showPathText = GetControl<Text>("text", showPathBox);
             rectTransform.gameObject.SetActive(true);
           
@@ -47,8 +48,12 @@ namespace G12 {
             setupButton.onClick.AddListener(delegate () {
                 uiSetup.S_Open(setupButton.transform);
             });
+
             C_SelectCard.S_InitObjectPool();
-            S_dddd();
+            C_PreviewCard.S_InitObjectPool();
+            C_PreviewCard.o_ObjectPool.ObjectPoolFather.SetParent(previewCardFather);
+
+            S_StartRun();
             C_Parameter.isShowAssetsPath.d_ChangleEvent += delegate (long dd) {
                 if (C_Parameter.isShowAssetsPath.Value == 1) {
                     showPathBox.gameObject.SetActive(true);
@@ -57,6 +62,7 @@ namespace G12 {
                 }
             };
             C_Parameter.isShowAssetsPath.Value += 0;
+
         }
         void SetBoundary(RectTransform boundary) {
             boundary.GetChild(0).position = new Vector3(Screen.width / 2, Screen.height+100, 0);
@@ -76,8 +82,8 @@ namespace G12 {
                 }
             }
         }
-        public void S_dddd() {
-            C_AssetsLoad.GetInstance.S_GetAssets(C_UIBase.Mono,delegate(Dictionary<string, int> assetsPathDic) {
+        public void S_StartRun() {
+            C_AssetsLoad.GetInstance.S_GetAssets(C_UIBase.Mono,delegate(List<Dictionary<string, int>> assetsPathDic) {
                 Debug.Log("资源数量____" + assetsPathDic.Count);
                 C_Parameter.screenCardNumber = assetsPathDic.Count;
                 S_ResetGame(assetsPathDic);
@@ -88,7 +94,7 @@ namespace G12 {
         /// <summary>
         /// 重新开始生成卡片数据
         /// </summary>
-        void S_ResetGame(Dictionary<string, int> assetsPathDic) {
+        void S_ResetGame(List<Dictionary<string, int>> assetsPathDic) {
             int screenMaxNumber = C_Parameter.screenCardNumber +(int)(C_Parameter.selectCardMaxNumber.Value * C_Parameter.selectRadiusZoomRatio.Value* C_Parameter.selectRadiusZoomRatio.Value*Mathf.PI);
             basiceSize = ((Screen.width * Screen.height) / screenMaxNumber )*0.55f;
             basiceSize = Mathf.Pow(basiceSize, 0.5f);
@@ -102,13 +108,13 @@ namespace G12 {
             C_UIBase.Mono.StartCoroutine(S_InitSelectBox(assetsPathDic, cardPrefab));
         }
         Transform cardFather;
-        IEnumerator S_InitSelectBox(Dictionary<string, int> assetsPathDic, RectTransform cardPrefab) {
+        IEnumerator S_InitSelectBox(List<Dictionary<string, int>> assetsPathList, RectTransform cardPrefab) {
             cardPrefab.gameObject.SetActive(false);
             float interval = 300 / basiceSize;
             RectTransform father = (RectTransform)cardPrefab.parent;
             int numberX = (int)(father.rect.width/ (cardPrefab.rect.width+ interval));
             int i = 0;
-            var dic= assetsPathDic.GetEnumerator();
+            var dic= assetsPathList.GetEnumerator();
             while (dic.MoveNext()) {
                 RectTransform rect = RectTransform.Instantiate(cardPrefab, cardFather);
                 rect.gameObject.SetActive(true);
@@ -123,15 +129,15 @@ namespace G12 {
                 C_Crad crad = rect.gameObject.AddComponent<C_Crad>();
                 crad.Init(rect);
                 crad.S_InitCard(rect, i, basiceSize);
-                crad.d_SelectCardEvent = delegate (string path,int type) {
-                    showPathText.text = path;
-                };
-                S_AssetsLoadProgress(i /( assetsPathDic.Count+0.01f));
-                yield return C_UIBase.Mono.StartCoroutine(crad.I_Load(dic.Current.Key, dic.Current.Value, basiceSize));
+                S_AssetsLoadProgress(i /( assetsPathList.Count+0.01f));
+                yield return C_UIBase.Mono.StartCoroutine(crad.I_Load(dic.Current, basiceSize));
                 i++;
             }
             yield return new WaitForSeconds(0);
             S_AssetsLoadProgress(2);
+        }
+        public void S_ShowAssetsPath(string path, int type) {
+            showPathText.text = path;
         }
     }
     public class C_Parameter {
@@ -156,6 +162,4 @@ namespace G12 {
         /// </summary>
         public static LongData videoIsAllPlay = new LongData("videoIsAllPlay",0);
     }
-
-
 }

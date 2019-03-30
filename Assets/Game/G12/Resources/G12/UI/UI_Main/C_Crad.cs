@@ -11,6 +11,9 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace G12 {
+    /// <summary>
+    /// 第一层卡片
+    /// </summary>
     public class C_Crad : MonoBehaviour {
         public RectTransform rectTransform;
         public RawImage rawImage;
@@ -26,10 +29,7 @@ namespace G12 {
             SetCapsuleCollider(1);
         }
         public void S_InitCard(RectTransform rectTransforms, int ii, float basiceSize) {
-            C_UGUI.S_Get(rectTransforms, ii).o_Press = delegate (C_UGUI uGUI) {
-                currentSelectCard = rectTransforms;
-                fingerPressPosi = Input.mousePosition;
-                pressPosi = currentSelectCard.position;
+            C_UGUI.S_Get(rectTransforms, ii).d_Press = delegate (C_UGUI uGUI) {
                 if (selectList.Contains(cardDic[ii]) == false) {
                     if (selectList.Count >= C_Parameter.selectCardMaxNumber.Value) {
                         int index = 0;// selectList.Count - 1;
@@ -39,11 +39,13 @@ namespace G12 {
                     selectList.Add(cardDic[ii]);
                     cardDic[ii].S_Select(basiceSize * C_Parameter.selectRadiusZoomRatio.Value);
                 }
-                C_UIBase.Mono.StartCoroutine(I_DragUpdate());
+                S_PressEvent(rectTransforms);
             };
-
-            C_UGUI.S_Get(rectTransforms).o_Lift = delegate (C_UGUI uGUI) {
-                currentSelectCard = null;
+            C_UGUI.S_Get(rectTransforms).d_DragEvent = delegate (C_UGUI uGUI) {
+                S_LiftEvent();
+            };
+            C_UGUI.S_Get(rectTransforms).d_Lift = delegate (C_UGUI uGUI) {
+                S_DragEvent(uGUI.o_PointerEventData.delta);
             };
             cardDic[ii] = this;
         }
@@ -51,12 +53,28 @@ namespace G12 {
         static Vector3 pressPosi, fingerPressPosi;
         static List<C_Crad> selectList = new List<C_Crad>();
         static Dictionary<int, C_Crad> cardDic = new Dictionary<int, C_Crad>();
+        public Action<Vector3> d_PosiOffectEvent;
+        public void S_PressEvent(RectTransform rectTransforms) {
+            currentSelectCard = rectTransforms;
+            fingerPressPosi = Input.mousePosition;
+            pressPosi = currentSelectCard.position;
+            C_UIBase.Mono.StartCoroutine(I_DragUpdate());
+        }
+        public void S_DragEvent(Vector3 offect) {
+            if (d_PosiOffectEvent != null) {
+                d_PosiOffectEvent(offect);
+            }
+        }
+        public void S_LiftEvent() {
+            currentSelectCard = null;
+        }
         IEnumerator I_DragUpdate() {
             if (currentSelectCard == null) {
                 yield break;
             }
             Vector3 offect = Input.mousePosition - fingerPressPosi;
             currentSelectCard.position = pressPosi + offect;
+
             yield return new WaitForSeconds(0);
             C_UIBase.Mono.StartCoroutine(I_DragUpdate());
         }
@@ -72,12 +90,12 @@ namespace G12 {
         }
 
 
-        public IEnumerator I_Load(string assetsPath, int assetsType, float basiceSize) {
-            this.assetsPath = assetsPath;
-            this.assetsType = assetsType;
+        public IEnumerator I_Load(Dictionary<string, int> assetsDic, float basiceSize) {
+            this.assetsDic = assetsDic;
             this.basiceSize = basiceSize;
-            string assetsPathPic = assetsPath + ".pic";
-            if (assetsType < 10) {
+            var assets=  assetsDic.ElementAt(0);
+            string assetsPathPic = assets.Key + ".pic";
+            if (assets.Value < 10) {
                 if (File.Exists(assetsPathPic)) {
                     WWW www = new WWW("file:///" + assetsPathPic);
                     yield return www;
@@ -93,10 +111,10 @@ namespace G12 {
                 }
             } else {
                 isPlay = false;
-                Debug.LogFormat("视频___{0}", assetsPath);
+                Debug.LogFormat("视频___{0}", assets.Key);
                 videoPlayer = gameObject.AddComponent<VideoPlayer>();
                 videoPlayer.source = VideoSource.Url;
-                videoPlayer.url = "file:///" + assetsPath;
+                videoPlayer.url = "file:///" + assets.Key;
                 videoPlayer.playOnAwake = false;
                 videoPlayer.waitForFirstFrame = true;
                 videoPlayer.sendFrameReadyEvents = true;
@@ -106,8 +124,10 @@ namespace G12 {
 
         }
         float basiceSize;
-        public string assetsPath;
-        int assetsType;
+
+        public Dictionary<string, int> assetsDic;
+
+
         bool isPlay;
         VideoPlayer videoPlayer;
         //  RenderTexture renderTexture;
@@ -149,16 +169,12 @@ namespace G12 {
             rigidbody.useGravity = false;
         }
         C_SelectCard selectCard;
-        public Action<string, int> d_SelectCardEvent;
         public void S_Select(float radius) {
             rawImage.enabled = false;
             GameObject.DestroyImmediate(rigidbody);
             SetCapsuleCollider(radius, true);
             selectCard = C_SelectCard.o_ObjectPool.S_GetObj(C_SelectCard.backOnlyAssetsPath);
-            selectCard.S_Open(this, assetsPath, assetsType, radius);
-            if (d_SelectCardEvent != null) {
-                d_SelectCardEvent(assetsPath, assetsType);
-            }
+            selectCard.S_Open(this, assetsDic, radius);
         }
         public void S_CancelSelect() {
             selectList.Remove(this);
