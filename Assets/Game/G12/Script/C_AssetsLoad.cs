@@ -5,16 +5,16 @@ using System.IO;
 using CC_Util;
 using UnityEngine;
 
-public class C_Ttttt {
-    public static C_Ttttt GetInstance {
+public class C_AssetsLoad {
+    public static C_AssetsLoad GetInstance {
         get {
             if (instance == null) {
-                instance = new C_Ttttt();
+                instance = new C_AssetsLoad();
             }
             return instance;
         }
     }
-    static C_Ttttt instance;
+    static C_AssetsLoad instance;
     MonoBehaviour mono;
     public void S_GetAssets(MonoBehaviour mono, Action<Dictionary<string, int>> callback) {
         this.mono = mono;
