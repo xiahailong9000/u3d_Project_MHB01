@@ -1,0 +1,476 @@
+fileFormatVersion: 2
+guid: 39722e0ad7cf92e46828ef1096ceb5a5
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: iopp_0
+    21300002: iopp_1
+    21300004: iopp_2
+    21300006: iopp_3
+    21300008: iopp_4
+    21300010: iopp_5
+    21300012: iopp_6
+    21300014: iopp_7
+    21300016: iopp_8
+    21300018: iopp_9
+    21300020: iopp_10
+    21300022: iopp_11
+    21300024: iopp_12
+    21300026: iopp_13
+    21300028: iopp_14
+    21300030: iopp_15
+    21300032: iopp_16
+    21300034: iopp_17
+    21300036: iopp_18
+    21300038: iopp_19
+    21300040: iopp_20
+    21300042: iopp_21
+    21300044: iopp_22
+    21300046: iopp_23
+    21300048: iopp_24
+    21300050: iopp_25
+    21300052: iopp_26
+    21300054: iopp_27
+    21300056: iopp_28
+    21300058: iopp_29
+    21300060: iopp_30
+    21300062: iopp_31
+    21300064: iopp_32
+    21300066: iopp_33
+    21300068: iopp_34
+    21300070: iopp_35
+    21300072: iopp_36
+    21300074: iopp_37
+    21300076: iopp_38
+    21300078: iopp_39
+    21300080: iopp_40
+    21300082: iopp_41
+    21300084: iopp_42
+    21300086: iopp_43
+    21300088: iopp_44
+    21300090: iopp_45
+    21300092: iopp_46
+    21300094: iopp_47
+    21300096: iopp_48
+    21300098: iopp_49
+    21300100: iopp_50
+    21300102: iopp_51
+    21300104: iopp_52
+    21300106: iopp_53
+    21300108: iopp_54
+    21300110: iopp_55
+    21300112: iopp_56
+    21300114: iopp_57
+    21300116: iopp_58
+    21300118: iopp_59
+    21300120: iopp_60
+    21300122: iopp_61
+    21300124: iopp_62
+    21300126: iopp_63
+    21300128: iopp_64
+    21300130: iopp_65
+  externalObjects: {}
+  serializedVersion: 7
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: iopp_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 495
+        width: 442
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3285acdda09c75a489ccfb704496c937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_1
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 614
+        width: 450
+        height: 235
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8219de979912f024ead5f392841aeb22
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_2
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 569
+        width: 396
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6756359befa33a4396cb1b39638097f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_3
+      rect:
+        serializedVersion: 2
+        x: 1118
+        y: 462
+        width: 250
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69ceaa25bfadb3b4c8ff20436fc3855e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_4
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 291
+        width: 450
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7fd09757b4c0f5498a0b6dafc49a3bb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_5
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 289
+        width: 465
+        height: 303
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74f3081b71954c943ac52cf33410475f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_6
+      rect:
+        serializedVersion: 2
+        x: 1470
+        y: 359
+        width: 450
+        height: 254
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab7a029a520e4d848b6241869c06edc9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_7
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 426
+        width: 295
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17dfadcc5ab782c4fbfe76d9b003bd87
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_8
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 66
+        width: 409
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35a0ac37993de5449a030bb43a926e66
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_9
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 50
+        width: 370
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8adc1306488bb8841a56231d6b59ee19
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_10
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 9
+        width: 450
+        height: 231
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb96f61d1c92da64b8a0162360608750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_11
+      rect:
+        serializedVersion: 2
+        x: 1224
+        y: 58
+        width: 576
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e04c298f943f0d54ba7259e17548ee8a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_12
+      rect:
+        serializedVersion: 2
+        x: 1601
+        y: 583
+        width: 309
+        height: 258
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c21ba4c47ac0d4c4893918a3f18e08d6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_13
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 347
+        width: 199
+        height: 455
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e53612816511e9d40a37d0e79b6b9c88
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: iopp_14
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 133
+        width: 504
+        height: 654
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 039935bc9873ea24b83e5448272011da
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 7412465aad4c5994aade1da0aecc21e4
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

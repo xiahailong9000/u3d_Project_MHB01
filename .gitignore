@@ -1,0 +1,33 @@
+.vs/
+#Unity3d Stuff
+
+
+Library/
+obj/
+ProjectSettings/
+Temp/
+Debug/
+Packages/
+Logs/
+Assets/BuildReport/
+Demo_v*
+FilePackage/
+
+Assets/StreamingAssets
+
+*.csproj
+*.sln
+*.apk
+*.obb
+*.ipa
+
+#IOS build Stuff
+ios_01/
+ios_02/
+ios_03/
+
+android_01/
+android_02/
+android_03/
+
+nameTranslation.txt
