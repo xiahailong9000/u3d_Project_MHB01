@@ -9,6 +9,7 @@ using UI00;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using DG.Tweening;
 
 namespace G12 {
     /// <summary>
@@ -30,21 +31,23 @@ namespace G12 {
                 nn.gameObject.SetActive(true);
             };
             o_ObjectPool.d_ObjDeathEvent = delegate (C_PreviewCard nn) {
-                nn.transform.SetParent(null);
                 nn.gameObject.SetActive(false);
             };
         }
         public RawImage videoImage;
-        public RectTransform rectTransform, boxTransform, videoRectTransform;
+        public RectTransform rectTransform, videoRectTransform,line;
         public VideoPlayer videoPlayer;
         Button closeButton;
+        Transform dragButton;
         void S_Init() {
             rectTransform = GetComponent<RectTransform>();
-            boxTransform = transform.Find("box").GetComponent<RectTransform>();
             videoImage = gameObject.transform.Find("video01").GetComponent<RawImage>();
             videoRectTransform = videoImage.GetComponent<RectTransform>();
+            line = transform.Find("line").GetComponent<RectTransform>();
             videoPlayer = videoImage.GetComponent<VideoPlayer>();
-            closeButton = transform.Find("closeButton").GetComponent<Button>();
+            closeButton = videoImage.transform.Find("closeButton").GetComponent<Button>();
+            dragButton = videoImage.transform.Find("dragButton");
+            line.localPosition = Vector3.zero;
             videoPlayer.playOnAwake = false;
             videoPlayer.source = VideoSource.Url;
             //  videoPlayer.url = "file:///" + assetsPath;
@@ -55,42 +58,86 @@ namespace G12 {
                 videoImage.texture = source.texture;
                 if (isStartframe) {
                     isStartframe = false;
-                    S_SetSize(videoRectTransform, source.texture, radius);
+                   // sizeDelta = source.texture.texelSize;
+                    sizeDelta = new Vector2(source.texture.width, source.texture.height);
+                    S_SetSize(radius/2);
                 }
             };
             closeButton.onClick.AddListener(delegate () {
-               // card.S_CancelSelect();
-                S_Close();
+                card.S_CancelSelect();
+              //  S_Close();
             });
 
             C_UGUI.S_Get(rectTransform).d_Press = delegate (C_UGUI uGUI) {
-                S_PressEvent(rectTransform);
+                transform.SetSiblingIndex(10000);
+                S_PressEvent();
             };
             C_UGUI.S_Get(rectTransform).d_Lift = delegate (C_UGUI uGUI) {
                 S_LiftEvent();
             };
+            C_UGUI.S_Get(dragButton).d_Press = delegate (C_UGUI uGUI) {
+                transform.SetSiblingIndex(10000);
+                isDraging = true;
+                fingerPressPosi = Input.mousePosition;
+                fingerPressDistance= Vector3.Distance(transform.position, Input.mousePosition);
+
+                C_UIBase.Mono.StartCoroutine(I_DragZoom());
+            };
+            C_UGUI.S_Get(dragButton).d_Lift = delegate (C_UGUI uGUI) {
+                isDraging = false;
+                float zoomDistance = Vector3.Distance(transform.position, Input.mousePosition);
+                zoomSize= zoomSize * (zoomDistance / fingerPressDistance);
+            };
         }
 
 
-        static RectTransform currentSelectCard;
-        static Vector3 pressPosi, fingerPressPosi;
-        public void S_PressEvent(RectTransform rectTransforms) {
-            currentSelectCard = rectTransforms;
+        RectTransform currentSelectCard;
+        Vector3 pressPosi, fingerPressPosi;
+        public void S_PressEvent() {
+            currentSelectCard = rectTransform;
             fingerPressPosi = Input.mousePosition;
             pressPosi = currentSelectCard.position;
-            C_UIBase.Mono.StartCoroutine(I_DragUpdate());
+            C_UIBase.Mono.StartCoroutine(I_DragOffect());
         }
         public void S_LiftEvent() {
             currentSelectCard = null;
         }
-        IEnumerator I_DragUpdate() {
+        IEnumerator I_DragOffect() {
             if (currentSelectCard == null) {
                 yield break;
             }
             Vector3 offect = Input.mousePosition - fingerPressPosi;
             currentSelectCard.position = pressPosi + offect;
+
+            S_RefreshLine();
+
             yield return new WaitForSeconds(0);
-            C_UIBase.Mono.StartCoroutine(I_DragUpdate());
+            C_UIBase.Mono.StartCoroutine(I_DragOffect());
+        }
+        void S_RefreshLine() {
+            Vector3 v0 = card.rectTransform.position;
+            Vector3 v1 = rectTransform.position;
+            Vector3 vv = v0 - v1;
+            float angle = Vector3.Angle(vv, Vector3.right);
+            if (vv.y < 0) {
+                angle = 360 - angle;
+            }
+            line.eulerAngles = new Vector3(0, 0, angle);
+            float distance = Vector3.Distance(v0, v1);
+            line.sizeDelta = new Vector2(distance, 35);
+        }
+
+        float zoomSize;
+        float fingerPressDistance;
+        bool isDraging;
+        IEnumerator I_DragZoom() {
+            if (isDraging == false) {
+                yield break;
+            }
+            float zoomDistance = Vector3.Distance(transform.position, Input.mousePosition);
+            S_SetSize((radius / 2)* zoomSize*(zoomDistance/ fingerPressDistance));
+            yield return new WaitForSeconds(0);
+            C_UIBase.Mono.StartCoroutine(I_DragZoom());
         }
 
 
@@ -98,13 +145,12 @@ namespace G12 {
 
         float radius;
         C_SelectCard.C_Card0 card;
-        public void S_Open(C_SelectCard.C_Card0 card, string assetsPath, int assetsType, float radius) {
+        public void S_Open(C_SelectCard.C_Card0 card, string assetsPath, int assetsType, Vector3 direction, float radius) {
             this.card = card;
             this.radius = radius;
             transform.position = card.rectTransform.position;
-            // transform.localScale = Vector3.one * radius / 200;
-            rectTransform.sizeDelta = Vector2.one * radius * 2;
-            boxTransform.sizeDelta = Vector2.one * (radius * 2f + 60);
+            rectTransform.sizeDelta = Vector2.one * radius ;
+            zoomSize = 1;
             videoImage.texture = null;
             if (assetsType < 10) {
                 C_AssetsLoad.S_WWW(C_UIBase.Mono, "file:///" + assetsPath, delegate (WWW www) {
@@ -115,27 +161,43 @@ namespace G12 {
                         Texture2D tt = www.texture;
                         //  tt.format = TextureFormat.ARGB32;
                         videoImage.texture = tt;
-                        S_SetSize(videoRectTransform, www.texture, radius);
+                       // sizeDelta = www.texture.texelSize;
+                        sizeDelta = new Vector2(www.texture.width, www.texture.height);
+                        S_SetSize(radius/2);
                     }
                 });
             } else {
                 videoPlayer.url = "file:///" + assetsPath;
                 videoPlayer.Play();
             }
+            transform.localScale = Vector3.one * 0.3f;
+            transform.DOScale(Vector3.one, 0.3f);
+            line.gameObject.SetActive(false);
+            transform.DOMove(transform.position + direction * radius, 0.3f).OnComplete(delegate () {
+                line.gameObject.SetActive(true);
+                S_RefreshLine();
+            });
         }
-        void S_SetSize(RectTransform rectTransform0, Texture texture, float radius) {
+        Vector2 sizeDelta;
+        void S_SetSize(float radius) {
             Vector2 size;
             float thumbnailLenght = radius * 1.6f;
-            if (texture.width >= texture.height) {
-                size = new Vector2(thumbnailLenght, texture.height * thumbnailLenght / texture.width);
+            if (sizeDelta.x >= sizeDelta.y) {
+                size = new Vector2(thumbnailLenght, sizeDelta.y * thumbnailLenght / sizeDelta.x);
             } else {
-                size = new Vector2(texture.width * thumbnailLenght / texture.height, thumbnailLenght);
+                size = new Vector2(sizeDelta.x * thumbnailLenght / sizeDelta.y, thumbnailLenght);
             }
             //Vector2 size = new Vector2(texture.width, texture.height) * 512 / C_Ttttt.thumbnailLenght;
-            rectTransform0.sizeDelta = size;
+            videoRectTransform.sizeDelta = size;
+            rectTransform.sizeDelta = Vector2.one* thumbnailLenght;
         }
         public void S_Close() {
-            o_ObjectPool.S_SetToDeathObj(previewOnlyAssetsPath, this);
+            transform.localScale = Vector3.one;
+            transform.DOScale(Vector3.one*0.3f, 0.3f);
+            line.gameObject.SetActive(false);
+            transform.DOMove(card.rectTransform.position, 0.3f).OnComplete(delegate () {
+                o_ObjectPool.S_SetToDeathObj(previewOnlyAssetsPath, this);
+            });
         }
     }
 }

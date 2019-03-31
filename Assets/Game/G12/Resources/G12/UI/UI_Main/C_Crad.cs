@@ -39,13 +39,10 @@ namespace G12 {
                     selectList.Add(cardDic[ii]);
                     cardDic[ii].S_Select(basiceSize * C_Parameter.selectRadiusZoomRatio.Value);
                 }
-                S_PressEvent(rectTransforms);
-            };
-            C_UGUI.S_Get(rectTransforms).d_DragEvent = delegate (C_UGUI uGUI) {
-                S_LiftEvent();
+                S_PressEvent();
             };
             C_UGUI.S_Get(rectTransforms).d_Lift = delegate (C_UGUI uGUI) {
-                S_DragEvent(uGUI.o_PointerEventData.delta);
+                S_LiftEvent();
             };
             cardDic[ii] = this;
         }
@@ -53,20 +50,23 @@ namespace G12 {
         static Vector3 pressPosi, fingerPressPosi;
         static List<C_Crad> selectList = new List<C_Crad>();
         static Dictionary<int, C_Crad> cardDic = new Dictionary<int, C_Crad>();
-        public Action<Vector3> d_PosiOffectEvent;
-        public void S_PressEvent(RectTransform rectTransforms) {
-            currentSelectCard = rectTransforms;
+        public Action d_PressEvent, d_LiftEvent;
+        public void S_PressEvent() {
+            transform.SetSiblingIndex(10000);
+            //Debug.Log("按下_____0");
+            currentSelectCard = rectTransform;
             fingerPressPosi = Input.mousePosition;
             pressPosi = currentSelectCard.position;
-            C_UIBase.Mono.StartCoroutine(I_DragUpdate());
-        }
-        public void S_DragEvent(Vector3 offect) {
-            if (d_PosiOffectEvent != null) {
-                d_PosiOffectEvent(offect);
+            if (d_PressEvent != null) {
+                d_PressEvent();
             }
+            C_UIBase.Mono.StartCoroutine(I_DragUpdate());
         }
         public void S_LiftEvent() {
             currentSelectCard = null;
+            if (d_LiftEvent != null) {
+                d_LiftEvent();
+            }
         }
         IEnumerator I_DragUpdate() {
             if (currentSelectCard == null) {
@@ -74,7 +74,6 @@ namespace G12 {
             }
             Vector3 offect = Input.mousePosition - fingerPressPosi;
             currentSelectCard.position = pressPosi + offect;
-
             yield return new WaitForSeconds(0);
             C_UIBase.Mono.StartCoroutine(I_DragUpdate());
         }
@@ -170,6 +169,7 @@ namespace G12 {
         }
         C_SelectCard selectCard;
         public void S_Select(float radius) {
+            transform.SetSiblingIndex(10000);
             rawImage.enabled = false;
             GameObject.DestroyImmediate(rigidbody);
             SetCapsuleCollider(radius, true);
