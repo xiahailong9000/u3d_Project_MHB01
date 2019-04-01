@@ -92,6 +92,13 @@ namespace G12 {
                     card.rectTransform.gameObject.SetActive(true);
                     card.rectTransform.sizeDelta = new Vector2(basicsWidth, basicsHeight)* ratio*0.8f;
 
+                    //设置横向延伸
+                    if (Mathf.Abs(direction.x) < 0.1f) {
+                        direction = new Vector3(0.5f, direction.y / 10, 0);
+                    } else {
+                        direction = new Vector3(direction.x, direction.y / 10, 0);
+                    }
+                    direction = direction.normalized;
 
                     card.S_Open(this, dic.Current.Key, dic.Current.Value,direction, basicsWidth, basicsHeight, radius);
                    
@@ -158,14 +165,15 @@ namespace G12 {
                 //  videoPlayer.url = "file:///" + assetsPath;
                 videoPlayer.waitForFirstFrame = true;
                 videoPlayer.sendFrameReadyEvents = true;
-                bool isStartframe = true;
-                videoPlayer.frameReady += delegate (VideoPlayer source, long frameIdx) {
-                    videoImage.texture = source.texture;
-                    if (isStartframe) {
-                        isStartframe = false;
-                        S_SetSize( source.texture, radius);
-                    }
-                };
+               // bool isStartframe = true;
+                videoPlayer.frameReady += S_VideoFrameEvent;
+                //delegate (VideoPlayer source, long frameIdx) {
+                //    videoImage.texture = source.texture;
+                //    if (isStartframe) {
+                //        isStartframe = false;
+                //        S_SetSize( source.texture, radius);
+                //    }
+                //};
                 C_UGUI.S_Get(rectTransform).d_Press = delegate (C_UGUI uGUI) {
                     //Debug.Log("按下_____1");
                     fingerPressPosi = Input.mousePosition;
@@ -178,6 +186,34 @@ namespace G12 {
                         S_SelectCard();
                     }
                 };
+            }
+            bool isPlay;
+            void S_VideoFrameEvent(VideoPlayer source, long frameIdx) {
+                videoImage.texture = source.texture;
+                if (isPlay == false) {
+                    //sizeDelta = new Vector2(source.texture.width, source.texture.height) * basiceSize / source.texture.width;
+                    isPlay = true;
+                    S_SetSize(source.texture, radius);
+                    if (C_Parameter.videoIsAllPlay.Value == 0) {
+                        //Texture2D tt = source.texture as Texture2D;
+                        //rawImage.texture = C_Ttttt.ScaleTexture(tt, source.texture.width / 5, source.texture.height / 5);
+
+                        Texture2D videoFrameTexture = new Texture2D(2, 2);
+                        RenderTexture renderTexture = source.texture as RenderTexture;
+                        if (videoFrameTexture.width != renderTexture.width || videoFrameTexture.height != renderTexture.height) {
+                            videoFrameTexture.Resize(renderTexture.width, renderTexture.height);
+                        }
+                        RenderTexture.active = renderTexture;
+                        videoFrameTexture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+                        videoFrameTexture.Apply();
+                        RenderTexture.active = null;
+                        videoPlayer.frameReady -= S_VideoFrameEvent;
+                        videoPlayer.sendFrameReadyEvents = false;
+                        videoImage.texture = videoFrameTexture;
+                        // C_Ttttt.S_Thumbnail(assetsPath, videoFrameTexture);
+                        videoPlayer.Stop();
+                    }
+                }
             }
             static Vector3 fingerPressPosi;
             void S_SetSize(Texture texture, float radius) {
@@ -225,6 +261,7 @@ namespace G12 {
                         }
                     });
                 } else {
+                    isPlay = false;
                     videoPlayer.url = "file:///" + assetsPath;
                     videoPlayer.Play();
                 }

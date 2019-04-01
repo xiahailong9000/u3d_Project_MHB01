@@ -69,7 +69,6 @@ namespace G12 {
             });
 
             C_UGUI.S_Get(rectTransform).d_Press = delegate (C_UGUI uGUI) {
-                transform.SetSiblingIndex(10000);
                 S_PressEvent();
             };
             C_UGUI.S_Get(rectTransform).d_Lift = delegate (C_UGUI uGUI) {
@@ -77,6 +76,7 @@ namespace G12 {
             };
             C_UGUI.S_Get(dragButton).d_Press = delegate (C_UGUI uGUI) {
                 transform.SetSiblingIndex(10000);
+                card.rectTransform.SetSiblingIndex(10000);
                 isDraging = true;
                 fingerPressPosi = Input.mousePosition;
                 fingerPressDistance= Vector3.Distance(transform.position, Input.mousePosition);
@@ -94,6 +94,8 @@ namespace G12 {
         RectTransform currentSelectCard;
         Vector3 pressPosi, fingerPressPosi;
         public void S_PressEvent() {
+            transform.SetSiblingIndex(10000);
+            card.rectTransform.SetSiblingIndex(10000);
             currentSelectCard = rectTransform;
             fingerPressPosi = Input.mousePosition;
             pressPosi = currentSelectCard.position;
@@ -148,6 +150,7 @@ namespace G12 {
         public void S_Open(C_SelectCard.C_Card0 card, string assetsPath, int assetsType, Vector3 direction, float radius) {
             this.card = card;
             this.radius = radius;
+            transform.SetParent(card.rectTransform);
             transform.position = card.rectTransform.position;
             rectTransform.sizeDelta = Vector2.one * radius ;
             zoomSize = 1;
@@ -189,7 +192,7 @@ namespace G12 {
             }
             //Vector2 size = new Vector2(texture.width, texture.height) * 512 / C_Ttttt.thumbnailLenght;
             videoRectTransform.sizeDelta = size;
-            rectTransform.sizeDelta = Vector2.one* thumbnailLenght;
+            rectTransform.sizeDelta = size + Vector2.one * 40;// Vector2.one* thumbnailLenght;
         }
         public void S_Close() {
             transform.localScale = Vector3.one;
