@@ -57,9 +57,9 @@ namespace G12 {
             });
         }
         Dictionary<string, int> assetsDic;
-        C_Crad father;
+        C_Card father;
         C_Card0[] showCards;
-        public void S_Open(C_Crad father, Dictionary<string, int> assetsDic, float radius) {
+        public void S_Open(C_Card father, Dictionary<string, int> assetsDic, float radius) {
             this.father = father;
             this.assetsDic = assetsDic;
             rectRoot.SetParent(father.rectTransform);
@@ -71,7 +71,7 @@ namespace G12 {
             float pow = Mathf.Pow(assetsDic.Count, 0.5f);
             int row = (int)pow;
             int column = (int)((assetsDic.Count + 0.5f * row) / row);
-            Debug.LogFormat("横竖计算___{0}___{1}____{2}____{3}", assetsDic.Count, pow, row, column);
+            //Debug.LogFormat("横竖计算___{0}___{1}____{2}____{3}", assetsDic.Count, pow, row, column);
             float basicsWidth = (radius * 2)/row;
             float basicsHeight = (radius * 2)/column;
             var dic = assetsDic.GetEnumerator();
@@ -85,10 +85,11 @@ namespace G12 {
             
 
                     Vector3 direction = posi.normalized;
-                   // Debug.LogFormat("___________{0}_____{1}___{2}___{3}___{4}", i, row / 2f + 0.5f, (i % row), posi, direction);
-                    float ratio = Mathf.Clamp(radius / (posi.magnitude*1.5f), 0.1f,1);
-                    float ratio2 = Mathf.Clamp(radius / (posi.magnitude * 1.2f), 0.1f, 1);
-                    // ratio = 1;
+                    float magnitude= posi.magnitude;
+                 
+                    float ratio = Mathf.Clamp(radius / (magnitude * 1.5f), 0.1f,1);
+                    float ratio2 = Mathf.Clamp(radius / (magnitude * 1.2f), 0.1f, 1);
+                    //Debug.LogFormat("___________{0}_____{1}___{2}___{3}___", i, radius, magnitude, ratio2);
                     card.rectTransform.gameObject.SetActive(true);
                     card.rectTransform.sizeDelta = new Vector2(basicsWidth, basicsHeight)* ratio*0.8f;
 
@@ -111,7 +112,7 @@ namespace G12 {
             }
             father.d_PressEvent = S_GroupPressEvent;
             father.d_LiftEvent = S_GroupLiftEvent;
-            rectRoot.localScale = Vector3.one*0.2f;
+            rectRoot.localScale = Vector3.one * 0.2f;
             rectRoot.DOScale(Vector3.one, 0.3f);
         }
         void S_SetSize(RectTransform rectTransform0, Texture texture, float radius) {
@@ -129,9 +130,11 @@ namespace G12 {
             for (int i = 0; i < showCards.Length; i++) {
                 showCards[i].S_CancelSelect();
             }
+            //Debug.Log("ddddddddddddd__________S_Close");
             rectRoot.localScale = Vector3.one;
             rectRoot.DOScale(Vector3.one * 0.2f, 0.3f).OnComplete(delegate () {
                 o_ObjectPool.S_SetToDeathObj(backOnlyAssetsPath, this);
+                rectRoot.localScale = Vector3.one;
             });
         }
         public void S_PressEvent() {
@@ -194,7 +197,7 @@ namespace G12 {
                     //sizeDelta = new Vector2(source.texture.width, source.texture.height) * basiceSize / source.texture.width;
                     isPlay = true;
                     S_SetSize(source.texture, radius);
-                    if (C_Parameter.videoIsAllPlay.Value == 0) {
+                    if (UI_Main.C_Parameter.videoIsAllPlay.Value == 0) {
                         //Texture2D tt = source.texture as Texture2D;
                         //rawImage.texture = C_Ttttt.ScaleTexture(tt, source.texture.width / 5, source.texture.height / 5);
 

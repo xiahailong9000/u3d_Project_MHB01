@@ -14,7 +14,7 @@ namespace G12 {
     /// <summary>
     /// 第一层卡片
     /// </summary>
-    public class C_Crad : MonoBehaviour {
+    public class C_Card : MonoBehaviour {
         public RectTransform rectTransform;
         public RawImage rawImage;
         CapsuleCollider capsuleCollider;
@@ -28,28 +28,23 @@ namespace G12 {
             sizeDelta = Vector2.one * 20;
             SetCapsuleCollider(1);
         }
-        public void S_InitCard(RectTransform rectTransforms, int ii, float basiceSize) {
-            C_UGUI.S_Get(rectTransforms, ii).d_Press = delegate (C_UGUI uGUI) {
-                if (selectList.Contains(cardDic[ii]) == false) {
-                    if (selectList.Count >= C_Parameter.selectCardMaxNumber.Value) {
-                        int index = 0;// selectList.Count - 1;
-                        C_Crad crad0 = selectList[index];
-                        crad0.S_CancelSelect();
-                    }
-                    selectList.Add(cardDic[ii]);
-                    cardDic[ii].S_Select(basiceSize * C_Parameter.selectRadiusZoomRatio.Value);
-                }
+        int index;
+        public void S_InitCard(RectTransform rectTransform, int ii) {
+            index = ii;
+            C_UGUI.S_Get(rectTransform, ii).d_Press = delegate (C_UGUI uGUI) {
                 S_PressEvent();
             };
-            C_UGUI.S_Get(rectTransforms).d_Lift = delegate (C_UGUI uGUI) {
+            C_UGUI.S_Get(rectTransform).d_Lift = delegate (C_UGUI uGUI) {
                 S_LiftEvent();
             };
             cardDic[ii] = this;
         }
+
+
         static RectTransform currentSelectCard;
         static Vector3 pressPosi, fingerPressPosi;
-        static List<C_Crad> selectList = new List<C_Crad>();
-        static Dictionary<int, C_Crad> cardDic = new Dictionary<int, C_Crad>();
+        static List<C_Card> selectList = new List<C_Card>();
+        static Dictionary<int, C_Card> cardDic = new Dictionary<int, C_Card>();
         public Action d_PressEvent, d_LiftEvent;
         public void S_PressEvent() {
             transform.SetSiblingIndex(10000);
@@ -67,7 +62,22 @@ namespace G12 {
             if (d_LiftEvent != null) {
                 d_LiftEvent();
             }
+            if (Vector3.Distance(Input.mousePosition, fingerPressPosi) < 6) {
+                S_SelectCard(index, C_Parameter.basiceCardSize);
+            }
         }
+        static void S_SelectCard(int ii, float basiceSize) {
+            if (selectList.Contains(cardDic[ii]) == false) {
+                if (selectList.Count >= UI_Main.C_Parameter.selectCardMaxNumber.Value) {
+                    int index = 0;// selectList.Count - 1;
+                    C_Card crad0 = selectList[index];
+                    crad0.S_CancelSelect();
+                }
+                selectList.Add(cardDic[ii]);
+                cardDic[ii].S_Select(basiceSize * UI_Main.C_Parameter.selectRadiusZoomRatio.Value);
+            }
+        }
+
         IEnumerator I_DragUpdate() {
             if (currentSelectCard == null) {
                 yield break;
@@ -125,11 +135,8 @@ namespace G12 {
         float basiceSize;
 
         public Dictionary<string, int> assetsDic;
-
-
         bool isPlay;
         VideoPlayer videoPlayer;
-        //  RenderTexture renderTexture;
         void S_VideoFrameEvent(VideoPlayer source, long frameIdx) {
             rawImage.texture = source.texture;
             if (isPlay == false) {
@@ -137,7 +144,7 @@ namespace G12 {
                 rectTransform.sizeDelta = sizeDelta;
                 SetCapsuleCollider(1);
                 isPlay = true;
-                if (C_Parameter.videoIsAllPlay.Value == 0) {
+                if (UI_Main.C_Parameter.videoIsAllPlay.Value == 0) {
                     //Texture2D tt = source.texture as Texture2D;
                     //rawImage.texture = C_Ttttt.ScaleTexture(tt, source.texture.width / 5, source.texture.height / 5);
 
@@ -204,15 +211,8 @@ namespace G12 {
 
         }
 
-        void FixedUpdate() {
-            //  rigidbody.velocity = new Vector3(0, 0, 0);
+        public class C_Parameter {
+            public static float basiceCardSize;
         }
-        //void OnTriggerEnter(Collider other) { //当进入触发器
-        //    Debug.LogFormat("{0}__进入{1}", other.name, name);
-        //}
-        //void OnTriggerExit(Collider other) { //当退出触发器
-        //}
-        //void OnTriggerStay(Collider other) { // 当逗留触发器
-        //}
     }
 }

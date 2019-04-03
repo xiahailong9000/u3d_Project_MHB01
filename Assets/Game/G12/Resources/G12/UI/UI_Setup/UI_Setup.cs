@@ -36,17 +36,17 @@ namespace G12 {
             screenCardNumberSlider.onValueChanged.AddListener(delegate (float ff) {
                 int value = ((int)ff);
                 screenCardNumberSliderExplain.text = "屏幕照片数量 " + value;
-                C_Parameter.screenCardNumber = value;
+              //  C_Parameter.screenCardNumber = value;
             });
             selectCardMaxNumberSlider.onValueChanged.AddListener(delegate (float ff) {
                 int value = ((int)ff);
                 selectCardMaxNumberSliderExplain.text = "能选中的照片最大数量  " + value;
-                C_Parameter.selectCardMaxNumber.Value = value;
+                UI_Main.C_Parameter.selectCardMaxNumber.Value = value;
             });
             selectRadiusZoomRatioSlider.onValueChanged.AddListener(delegate (float ff) {
                 int value = ((int)ff);
                 selectRadiusZoomRatioSliderExplain.text = "选中泡泡半径放大的倍数  " + value;
-                C_Parameter.selectRadiusZoomRatio.Value = value;
+                UI_Main.C_Parameter.selectRadiusZoomRatio.Value = value;
             });
             clearButton.onClick.AddListener(delegate () {
                 S_Close();
@@ -56,10 +56,10 @@ namespace G12 {
                 G12Manage.GetInstance.uiMain.S_StartRun();
             });
             isShowAssetsPathToggle.d_SelectEvent += delegate (C_Toggle nn) {
-                C_Parameter.isShowAssetsPath.Value = nn.isSelected ? 1 : 0;
+                UI_Main.C_Parameter.isShowAssetsPath.Value = nn.isSelected ? 1 : 0;
             };
             videoIsAllPlayToggle.d_SelectEvent += delegate (C_Toggle nn) {
-                C_Parameter.videoIsAllPlay.Value = nn.isSelected ? 1 : 0;
+                UI_Main.C_Parameter.videoIsAllPlay.Value = nn.isSelected ? 1 : 0;
                 UI_SystemHints.GetInstance.o_HintsView.S_ShowMessage2(videoIsAllPlayToggle.transform, "切换视频播放模式", "需要重新加载场景", delegate (bool isConfirm) {
                     if (isConfirm) {
                         S_Close();
@@ -74,11 +74,11 @@ namespace G12 {
             S_RefreshShow();
         }
         void S_RefreshShow() {
-            screenCardNumberSlider.value= C_Parameter.screenCardNumber;
-            selectCardMaxNumberSlider.value = C_Parameter.selectCardMaxNumber.Value;
-            selectRadiusZoomRatioSlider.value = C_Parameter.selectRadiusZoomRatio.Value;
-            isShowAssetsPathToggle.isSelected = C_Parameter.isShowAssetsPath.Value == 1 ? true : false;
-            videoIsAllPlayToggle.isSelected = C_Parameter.videoIsAllPlay.Value == 1 ? true : false;
+           // screenCardNumberSlider.value= C_Parameter.screenCardNumber;
+            selectCardMaxNumberSlider.value = UI_Main.C_Parameter.selectCardMaxNumber.Value;
+            selectRadiusZoomRatioSlider.value = UI_Main.C_Parameter.selectRadiusZoomRatio.Value;
+            isShowAssetsPathToggle.isSelected = UI_Main.C_Parameter.isShowAssetsPath.Value == 1 ? true : false;
+            videoIsAllPlayToggle.isSelected = UI_Main.C_Parameter.videoIsAllPlay.Value == 1 ? true : false;
         }
     }
 }

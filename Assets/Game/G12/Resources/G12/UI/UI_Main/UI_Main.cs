@@ -85,32 +85,33 @@ namespace G12 {
         public void S_StartRun() {
             C_AssetsLoad.GetInstance.S_GetAssets(C_UIBase.Mono,delegate(List<Dictionary<string, int>> assetsPathDic) {
                 Debug.Log("资源数量____" + assetsPathDic.Count);
-                C_Parameter.screenCardNumber = assetsPathDic.Count;
+               // C_Parameter.screenCardNumber = assetsPathDic.Count;
                 S_ResetGame(assetsPathDic);
             });
            
         }
-        float basiceSize;
+        float basiceCardSize;
         /// <summary>
         /// 重新开始生成卡片数据
         /// </summary>
         void S_ResetGame(List<Dictionary<string, int>> assetsPathDic) {
-            int screenMaxNumber = C_Parameter.screenCardNumber +(int)(C_Parameter.selectCardMaxNumber.Value * C_Parameter.selectRadiusZoomRatio.Value* C_Parameter.selectRadiusZoomRatio.Value*Mathf.PI);
-            basiceSize = ((Screen.width * Screen.height) / screenMaxNumber )*0.55f;
-            basiceSize = Mathf.Pow(basiceSize, 0.5f);
-            cardPrefab.sizeDelta = new Vector2(1.2f, 0.75f) * basiceSize;
+            int screenMaxNumber = assetsPathDic.Count + (int)(C_Parameter.selectCardMaxNumber.Value * C_Parameter.selectRadiusZoomRatio.Value* C_Parameter.selectRadiusZoomRatio.Value*Mathf.PI);
+            basiceCardSize = ((Screen.width * Screen.height) / screenMaxNumber )*0.55f;
+            basiceCardSize = Mathf.Pow(basiceCardSize, 0.5f);
+            C_Card.C_Parameter.basiceCardSize = basiceCardSize;
+            cardPrefab.sizeDelta = new Vector2(1.2f, 0.75f) * basiceCardSize;
             if (cardFather != null) {
                 GameObject.Destroy(cardFather.gameObject);
             }
             cardFather = new GameObject("cardFather02").transform;
             cardFather.SetParent(cardPrefab.parent);
-            C_Crad.S_CloseData();
+            C_Card.S_CloseData();
             C_UIBase.Mono.StartCoroutine(S_InitSelectBox(assetsPathDic, cardPrefab));
         }
         Transform cardFather;
         IEnumerator S_InitSelectBox(List<Dictionary<string, int>> assetsPathList, RectTransform cardPrefab) {
             cardPrefab.gameObject.SetActive(false);
-            float interval = 300 / basiceSize;
+            float interval = 300 / basiceCardSize;
             RectTransform father = (RectTransform)cardPrefab.parent;
             int numberX = (int)(father.rect.width/ (cardPrefab.rect.width+ interval));
             int i = 0;
@@ -124,13 +125,13 @@ namespace G12 {
    
                 rect.GetComponent<RectTransform>().position =
                 new Vector3((cardPrefab.sizeDelta.x + interval) * (0.5f+i % numberX),Screen.height -(cardPrefab.sizeDelta.y + interval) * (0.5f+i / numberX), 0);
-                rect.sizeDelta = Vector2.one * basiceSize; ;
+                rect.sizeDelta = Vector2.one * basiceCardSize;
          
-                C_Crad crad = rect.gameObject.AddComponent<C_Crad>();
+                C_Card crad = rect.gameObject.AddComponent<C_Card>();
                 crad.Init(rect);
-                crad.S_InitCard(rect, i, basiceSize);
+                crad.S_InitCard(rect, i);
                 S_AssetsLoadProgress(i /( assetsPathList.Count+0.01f));
-                yield return C_UIBase.Mono.StartCoroutine(crad.I_Load(dic.Current, basiceSize));
+                yield return C_UIBase.Mono.StartCoroutine(crad.I_Load(dic.Current, basiceCardSize));
                 i++;
             }
             yield return new WaitForSeconds(0);
@@ -139,27 +140,28 @@ namespace G12 {
         public void S_ShowAssetsPath(string path, int type) {
             showPathText.text = path;
         }
+        public class C_Parameter {
+            /// <summary>
+            /// 能选中的照片最大数量
+            /// </summary>
+            public static LongData selectCardMaxNumber = new LongData("selectCardMaxNumber", 4);
+            /// <summary>
+            /// 屏幕照片最大数量
+            /// </summary>
+            // public static int screenCardNumber = 800;
+            /// <summary>
+            /// 选中照片的放大比例
+            /// </summary>
+            public static floatData selectRadiusZoomRatio = new floatData("selectRadiusZoomRatio", 2);
+            /// <summary>
+            /// 是否现在资源路径
+            /// </summary>
+            public static LongData isShowAssetsPath = new LongData("isShowAssetsPath", 0);
+            /// <summary>
+            /// 视频是否全部播放
+            /// </summary>
+            public static LongData videoIsAllPlay = new LongData("videoIsAllPlay", 0);
+        }
     }
-    public class C_Parameter {
-        /// <summary>
-        /// 能选中的照片最大数量
-        /// </summary>
-        public static LongData selectCardMaxNumber = new LongData("selectCardMaxNumber", 4);
-        /// <summary>
-        /// 屏幕照片最大数量
-        /// </summary>
-        public static int screenCardNumber = 800;
-        /// <summary>
-        /// 选中照片的放大比例
-        /// </summary>
-        public static floatData selectRadiusZoomRatio = new floatData("selectRadiusZoomRatio", 2);
-        /// <summary>
-        /// 是否现在资源路径
-        /// </summary>
-        public static LongData isShowAssetsPath = new LongData("isShowAssetsPath", 0);
-        /// <summary>
-        /// 视频是否全部播放
-        /// </summary>
-        public static LongData videoIsAllPlay = new LongData("videoIsAllPlay",0);
-    }
+
 }
