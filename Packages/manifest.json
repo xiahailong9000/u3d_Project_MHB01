@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "com.xia9000.cs_dll": "file:F:/GitHub/unity3d/UU_FruitsBattle/Assets/CS_DLL",
-    "com.xia9000.hotfix-dll": "file:F:/GitHub/unity3d/UU_FruitsBattle/Assets/HotFix_DLL",
-    "com.xia9000.ui02": "file:F:/GitHub/unity3d/UU_FruitsBattle/Assets/UI02_View",
+    "com.xia9000.cs_dll": "file:C:/github/unity3d/U3d_Packages/Assets/CS_DLL",
+    "com.xia9000.hotfix-dll": "file:C:/github/unity3d/U3d_Packages/Assets/HotFix_DLL",
+    "com.xia9000.ui02": "file:C:/github/unity3d/U3d_Packages/Assets/UI02_View",
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "2.0.16",
     "com.unity.package-manager-ui": "1.9.11",

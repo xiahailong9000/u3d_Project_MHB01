@@ -61,7 +61,7 @@ namespace G12 {
                     showPathBox.gameObject.SetActive(false);
                 }
             };
-            C_Parameter.isShowAssetsPath.Value += 0;
+            C_Parameter.isShowAssetsPath.Value =1;
 
         }
         void SetBoundary(RectTransform boundary) {
@@ -156,7 +156,7 @@ namespace G12 {
             /// <summary>
             /// 是否现在资源路径
             /// </summary>
-            public static LongData isShowAssetsPath = new LongData("isShowAssetsPath", 0);
+            public static LongData isShowAssetsPath = new LongData("isShowAssetsPath", 1);
             /// <summary>
             /// 视频是否全部播放
             /// </summary>

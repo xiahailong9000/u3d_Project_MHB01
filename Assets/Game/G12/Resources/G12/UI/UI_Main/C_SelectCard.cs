@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using DG.Tweening;
+using System.IO;
 
 namespace G12 {
     /// <summary>
@@ -158,11 +159,12 @@ namespace G12 {
             public RectTransform rectTransform;
             public RawImage videoImage;
             public VideoPlayer videoPlayer;
+            Text name;
             public C_Card0(RectTransform rectTransform) {
                 this.rectTransform = rectTransform;
                 videoImage = rectTransform.GetComponent<RawImage>();
                 videoPlayer = videoImage.GetComponent<VideoPlayer>();
-
+                name = rectTransform.Find("name").GetComponent<Text>();
                 videoPlayer.playOnAwake = false;
                 videoPlayer.source = VideoSource.Url;
                 //  videoPlayer.url = "file:///" + assetsPath;
@@ -247,6 +249,7 @@ namespace G12 {
                 this.assetsType = assetsType;
                 this.basicsWidth = basicsWidth;
                 this.basicsHeight = basicsHeight;
+                name.text = Path.GetFileName(assetsPath);
                 //Vector3 vv = father.rectRoot.position;
                 //rectTransform.position = new Vector3(vv.x, vv.y, -radius * 3);
                 radius = 70;

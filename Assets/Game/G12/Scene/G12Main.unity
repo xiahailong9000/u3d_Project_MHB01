@@ -425,6 +425,16 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 224132036138431004, guid: 6251c2e9e3672e94bb1f5ab566e1a2d5,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.350006
+      objectReference: {fileID: 0}
+    - target: {fileID: 224132036138431004, guid: 6251c2e9e3672e94bb1f5ab566e1a2d5,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 13.200012
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6251c2e9e3672e94bb1f5ab566e1a2d5, type: 2}
   m_IsPrefabAsset: 0
@@ -437,6 +447,7 @@ GameObject:
   m_Component:
   - component: {fileID: 951930122}
   - component: {fileID: 951930124}
+  - component: {fileID: 951930123}
   m_Layer: 5
   m_Name: mono
   m_TagString: Untagged
@@ -462,6 +473,23 @@ RectTransform:
   m_AnchoredPosition: {x: 1049.1, y: 479.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &951930123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 951930121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff71fb737a9654c44a60650d87f3240a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  domainName: ec2-52-82-11-149.cn-northwest-1.compute.amazonaws.com.cn
+  isUseDomainName: 0
+  ipV4: 10.235.8.45
+  isUseIPv6: 0
+  ipV6: fe80::9105:fbf:dcbd:ae33
+  isSaveToLocal: 1
 --- !u!114 &951930124
 MonoBehaviour:
   m_ObjectHideFlags: 0

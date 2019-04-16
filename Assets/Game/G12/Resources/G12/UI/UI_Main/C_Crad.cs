@@ -109,7 +109,7 @@ namespace G12 {
                     WWW www = new WWW("file:///" + assetsPathPic);
                     yield return www;
                     if (www.error != null) {
-                        Debug.Log(("加载失败__" + assetsPathPic).S_SetColor("ff0000"));
+                        Debug.LogError(("加载失败__" + assetsPathPic).S_SetColor("ff0000"));
                     } else {
                         rawImage.texture = www.texture;
                         sizeDelta = new Vector2(www.texture.width, www.texture.height) * basiceSize / C_AssetsLoad.thumbnailLenght;

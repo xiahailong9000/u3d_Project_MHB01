@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using DG.Tweening;
+using System.IO;
 
 namespace G12 {
     /// <summary>
@@ -39,6 +40,7 @@ namespace G12 {
         public VideoPlayer videoPlayer;
         Button closeButton;
         Transform dragButton;
+        Text name;
         void S_Init() {
             rectTransform = GetComponent<RectTransform>();
             videoImage = gameObject.transform.Find("video01").GetComponent<RawImage>();
@@ -47,6 +49,7 @@ namespace G12 {
             videoPlayer = videoImage.GetComponent<VideoPlayer>();
             closeButton = videoImage.transform.Find("closeButton").GetComponent<Button>();
             dragButton = videoImage.transform.Find("dragButton");
+            name= videoImage.transform.Find("name").GetComponent<Text>();
             line.localPosition = Vector3.zero;
             videoPlayer.playOnAwake = false;
             videoPlayer.source = VideoSource.Url;
@@ -153,6 +156,7 @@ namespace G12 {
             transform.SetParent(card.rectTransform);
             transform.position = card.rectTransform.position;
             rectTransform.sizeDelta = Vector2.one * radius ;
+            name.text = Path.GetFileName(assetsPath);
             zoomSize = 1;
             videoImage.texture = null;
             if (assetsType < 10) {
