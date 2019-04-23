@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using DG.Tweening;
 using System.IO;
+using UnityEngine.EventSystems;
 
 namespace G12 {
     /// <summary>
@@ -113,6 +114,7 @@ namespace G12 {
             }
             father.d_PressEvent = S_GroupPressEvent;
             father.d_LiftEvent = S_GroupLiftEvent;
+            father.d_DragEvent = S_GroupDragEvent;
             rectRoot.localScale = Vector3.one * 0.2f;
             rectRoot.DOScale(Vector3.one, 0.3f);
         }
@@ -138,20 +140,28 @@ namespace G12 {
                 rectRoot.localScale = Vector3.one;
             });
         }
-        public void S_PressEvent() {
-            father.S_PressEvent();
+        public void S_PressEvent(PointerEventData pointerEventData) {
+            father.S_PressEvent(pointerEventData);
         }
-        public void S_LiftEvent() {
-            father.S_LiftEvent();
+        public void S_LiftEvent(PointerEventData pointerEventData) {
+            father.S_LiftEvent(pointerEventData);
         }
-        public void S_GroupPressEvent() {
+        public void S_DragEvent(PointerEventData pointerEventData) {
+            father.S_DragEvent(pointerEventData);
+        }
+        public void S_GroupPressEvent(PointerEventData pointerEventData) {
             for (int i = 0; i < showCards.Length; i++) {
-                showCards[i].S_PressEvent();
+                showCards[i].S_PressEvent(pointerEventData);
             }
         }
-        public void S_GroupLiftEvent() {
+        public void S_GroupLiftEvent(PointerEventData pointerEventData) {
             for (int i = 0; i < showCards.Length; i++) {
-                showCards[i].S_LiftEvent();
+                showCards[i].S_LiftEvent(pointerEventData);
+            }
+        }
+        public void S_GroupDragEvent(PointerEventData pointerEventData) {
+            for (int i = 0; i < showCards.Length; i++) {
+                showCards[i].S_DragEvent(pointerEventData);
             }
         }
         [Serializable]
@@ -181,15 +191,18 @@ namespace G12 {
                 //};
                 C_UGUI.S_Get(rectTransform).d_Press = delegate (C_UGUI uGUI) {
                     //Debug.Log("按下_____1");
-                    fingerPressPosi = C_Tools.mousePosition;
-                    father.S_PressEvent();
+                    fingerPressPosi = uGUI.o_PointerEventData.position.S_ToVector3();
+                    father.S_PressEvent(uGUI.o_PointerEventData);
                 };
                 C_UGUI.S_Get(rectTransform).d_Lift = delegate (C_UGUI uGUI) {
                     //Debug.Log("抬起_____1");
-                    father.S_LiftEvent();
-                    if(Vector3.Distance(fingerPressPosi, C_Tools.mousePosition) < 6) {
+                    father.S_LiftEvent(uGUI.o_PointerEventData);
+                    if(Vector3.Distance(fingerPressPosi, uGUI.o_PointerEventData.position.S_ToVector3()) < 6) {
                         S_SelectCard();
                     }
+                };
+                C_UGUI.S_Get(rectTransform).d_DragEvent = delegate (C_UGUI uGUI) {
+                    father.S_DragEvent(uGUI.o_PointerEventData);
                 };
             }
             bool isPlay;
@@ -289,18 +302,25 @@ namespace G12 {
                     previewCard = null;
                 }
             }
-            public void S_PressEvent() {
+            public void S_PressEvent(PointerEventData pointerEventData) {
                 if (previewCard != null) {
-                    previewCard.S_PressEvent();
+                    previewCard.S_PressEvent(pointerEventData);
                 } else {
                    // Debug.LogFormat("没有被选中____不能打开");
                 }
             }
-            public void S_LiftEvent() {
+            public void S_LiftEvent(PointerEventData pointerEventData) {
                 if (previewCard != null) {
-                    previewCard.S_LiftEvent();
+                    previewCard.S_LiftEvent(pointerEventData);
                 } else {
                   //  Debug.LogFormat("没有被选中____不能打开");
+                }
+            }
+            public void S_DragEvent(PointerEventData pointerEventData) {
+                if (previewCard != null) {
+                    previewCard.S_DragEvent(pointerEventData);
+                } else {
+                    //  Debug.LogFormat("没有被选中____不能打开");
                 }
             }
         }

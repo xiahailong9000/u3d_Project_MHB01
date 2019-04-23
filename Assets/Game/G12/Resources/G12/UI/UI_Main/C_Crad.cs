@@ -7,6 +7,7 @@ using System.Text;
 using CC_Util;
 using UI00;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -32,10 +33,13 @@ namespace G12 {
         public void S_InitCard(RectTransform rectTransform, int ii) {
             index = ii;
             C_UGUI.S_Get(rectTransform, ii).d_Press = delegate (C_UGUI uGUI) {
-                S_PressEvent();
+                S_PressEvent(uGUI.o_PointerEventData);
             };
             C_UGUI.S_Get(rectTransform).d_Lift = delegate (C_UGUI uGUI) {
-                S_LiftEvent();
+                S_LiftEvent(uGUI.o_PointerEventData);
+            };
+            C_UGUI.S_Get(rectTransform).d_DragEvent = delegate (C_UGUI uGUI) {
+                S_DragEvent(uGUI.o_PointerEventData);
             };
             cardDic[ii] = this;
         }
@@ -45,26 +49,30 @@ namespace G12 {
         static Vector3 pressPosi, fingerPressPosi;
         static List<C_Card> selectList = new List<C_Card>();
         static Dictionary<int, C_Card> cardDic = new Dictionary<int, C_Card>();
-        public Action d_PressEvent, d_LiftEvent;
-        public void S_PressEvent() {
+        public Action<PointerEventData> d_PressEvent, d_LiftEvent, d_DragEvent;
+        public void S_PressEvent(PointerEventData pointerEventData) {
             transform.SetSiblingIndex(10000);
             //Debug.Log("按下_____0");
             currentSelectCard = rectTransform;
-            fingerPressPosi = C_Tools.mousePosition;
+            fingerPressPosi = pointerEventData.position.S_ToVector3();
             pressPosi = currentSelectCard.position;
             if (d_PressEvent != null) {
-                d_PressEvent();
+                d_PressEvent(pointerEventData);
             }
-            C_UIBase.Mono.StartCoroutine(I_DragUpdate());
+            //C_UIBase.Mono.StartCoroutine(I_DragUpdate());
         }
-        public void S_LiftEvent() {
+        public void S_LiftEvent(PointerEventData pointerEventData) {
             currentSelectCard = null;
             if (d_LiftEvent != null) {
-                d_LiftEvent();
+                d_LiftEvent(pointerEventData);
             }
-            if (Vector3.Distance(C_Tools.mousePosition, fingerPressPosi) < 6) {
+            if (Vector3.Distance(pointerEventData.position.S_ToVector3(), fingerPressPosi) < 6) {
                 S_SelectCard(index, C_Parameter.basiceCardSize);
             }
+        }
+        public void S_DragEvent(PointerEventData pointerEventData) {
+            Vector3 offect = pointerEventData.position.S_ToVector3() - fingerPressPosi;
+            currentSelectCard.position = pressPosi + offect;
         }
         static void S_SelectCard(int ii, float basiceSize) {
             if (selectList.Contains(cardDic[ii]) == false) {
@@ -76,16 +84,6 @@ namespace G12 {
                 selectList.Add(cardDic[ii]);
                 cardDic[ii].S_Select(basiceSize * UI_Main.C_Parameter.selectRadiusZoomRatio.Value);
             }
-        }
-
-        IEnumerator I_DragUpdate() {
-            if (currentSelectCard == null) {
-                yield break;
-            }
-            Vector3 offect = C_Tools.mousePosition - fingerPressPosi;
-            currentSelectCard.position = pressPosi + offect;
-            yield return new WaitForSeconds(0);
-            C_UIBase.Mono.StartCoroutine(I_DragUpdate());
         }
 
 
