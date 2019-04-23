@@ -181,13 +181,13 @@ namespace G12 {
                 //};
                 C_UGUI.S_Get(rectTransform).d_Press = delegate (C_UGUI uGUI) {
                     //Debug.Log("按下_____1");
-                    fingerPressPosi = Input.mousePosition;
+                    fingerPressPosi = C_Tools.mousePosition;
                     father.S_PressEvent();
                 };
                 C_UGUI.S_Get(rectTransform).d_Lift = delegate (C_UGUI uGUI) {
                     //Debug.Log("抬起_____1");
                     father.S_LiftEvent();
-                    if(Vector3.Distance(fingerPressPosi, Input.mousePosition) < 6) {
+                    if(Vector3.Distance(fingerPressPosi, C_Tools.mousePosition) < 6) {
                         S_SelectCard();
                     }
                 };

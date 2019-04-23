@@ -50,7 +50,7 @@ namespace G12 {
             transform.SetSiblingIndex(10000);
             //Debug.Log("按下_____0");
             currentSelectCard = rectTransform;
-            fingerPressPosi = Input.mousePosition;
+            fingerPressPosi = C_Tools.mousePosition;
             pressPosi = currentSelectCard.position;
             if (d_PressEvent != null) {
                 d_PressEvent();
@@ -62,7 +62,7 @@ namespace G12 {
             if (d_LiftEvent != null) {
                 d_LiftEvent();
             }
-            if (Vector3.Distance(Input.mousePosition, fingerPressPosi) < 6) {
+            if (Vector3.Distance(C_Tools.mousePosition, fingerPressPosi) < 6) {
                 S_SelectCard(index, C_Parameter.basiceCardSize);
             }
         }
@@ -82,7 +82,7 @@ namespace G12 {
             if (currentSelectCard == null) {
                 yield break;
             }
-            Vector3 offect = Input.mousePosition - fingerPressPosi;
+            Vector3 offect = C_Tools.mousePosition - fingerPressPosi;
             currentSelectCard.position = pressPosi + offect;
             yield return new WaitForSeconds(0);
             C_UIBase.Mono.StartCoroutine(I_DragUpdate());

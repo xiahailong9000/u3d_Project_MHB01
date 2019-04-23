@@ -81,14 +81,14 @@ namespace G12 {
                 transform.SetSiblingIndex(10000);
                 card.rectTransform.SetSiblingIndex(10000);
                 isDraging = true;
-                fingerPressPosi = Input.mousePosition;
-                fingerPressDistance= Vector3.Distance(transform.position, Input.mousePosition);
+                fingerPressPosi = C_Tools.mousePosition;
+                fingerPressDistance= Vector3.Distance(transform.position, C_Tools.mousePosition);
 
                 C_UIBase.Mono.StartCoroutine(I_DragZoom());
             };
             C_UGUI.S_Get(dragButton).d_Lift = delegate (C_UGUI uGUI) {
                 isDraging = false;
-                float zoomDistance = Vector3.Distance(transform.position, Input.mousePosition);
+                float zoomDistance = Vector3.Distance(transform.position, C_Tools.mousePosition);
                 zoomSize= zoomSize * (zoomDistance / fingerPressDistance);
             };
         }
@@ -100,7 +100,7 @@ namespace G12 {
             transform.SetSiblingIndex(10000);
             card.rectTransform.SetSiblingIndex(10000);
             currentSelectCard = rectTransform;
-            fingerPressPosi = Input.mousePosition;
+            fingerPressPosi = C_Tools.mousePosition;
             pressPosi = currentSelectCard.position;
             C_UIBase.Mono.StartCoroutine(I_DragOffect());
         }
@@ -111,7 +111,7 @@ namespace G12 {
             if (currentSelectCard == null) {
                 yield break;
             }
-            Vector3 offect = Input.mousePosition - fingerPressPosi;
+            Vector3 offect = C_Tools.mousePosition - fingerPressPosi;
             currentSelectCard.position = pressPosi + offect;
 
             S_RefreshLine();
@@ -139,7 +139,7 @@ namespace G12 {
             if (isDraging == false) {
                 yield break;
             }
-            float zoomDistance = Vector3.Distance(transform.position, Input.mousePosition);
+            float zoomDistance = Vector3.Distance(transform.position, C_Tools.mousePosition);
             S_SetSize((radius / 2)* zoomSize*(zoomDistance/ fingerPressDistance));
             yield return new WaitForSeconds(0);
             C_UIBase.Mono.StartCoroutine(I_DragZoom());
