@@ -73,7 +73,7 @@ namespace G12 {
             float pow = Mathf.Pow(assetsDic.Count, 0.5f);
             int row = (int)pow;
             int column = (int)((assetsDic.Count + 0.5f * row) / row);
-            //Debug.LogFormat("横竖计算___{0}___{1}____{2}____{3}", assetsDic.Count, pow, row, column);
+            Debug.LogFormat("C_SelectCard横竖计算___{0}___{1}____{2}____{3}", assetsDic.Count, pow, row, column);
             float basicsWidth = (radius * 2)/row;
             float basicsHeight = (radius * 2)/column;
             var dic = assetsDic.GetEnumerator();
@@ -82,7 +82,8 @@ namespace G12 {
                 C_Card0 card= card0s[i];
                 if (bb) {
                     float posiX = (-row/2f+0.5f + (i % row)) * basicsWidth;
-                    float posiY = (-column/2f+0.5f + (i / row)) * basicsHeight;
+                    //float posiY = (-column/2f+0.5f + (i / row)) * basicsHeight;
+                    float posiY = (column / 2f - 0.5f - (i / row)) * basicsHeight;
                     Vector3 posi = new Vector3(posiX, posiY,0);
             
 
@@ -233,11 +234,11 @@ namespace G12 {
                     }
                 }
             }
-            static Vector3 fingerPressPosi;
+            Vector3 fingerPressPosi;
             void S_SetSize(Texture texture, float radius) {
                 Vector2 size;
-                float thumbnailLenght = radius * 1.6f;
-                thumbnailLenght = basicsWidth+ basicsHeight;
+                float thumbnailLenght = basicsWidth+ basicsHeight;
+                thumbnailLenght *= 1.3f;
                 if (texture.width >= texture.height) {
                     size = new Vector2(thumbnailLenght, texture.height * thumbnailLenght / texture.width);
                 } else {

@@ -73,6 +73,7 @@ namespace G12 {
             });
 
             C_UGUI.S_Get(rectTransform).d_Press = delegate (C_UGUI uGUI) {
+                Debug.Log("C_PreviewCard__点击按下_________________"+ assetsPath);
                 S_PressEvent(uGUI.o_PointerEventData);
             };
             C_UGUI.S_Get(rectTransform).d_Lift = delegate (C_UGUI uGUI) {
@@ -85,6 +86,7 @@ namespace G12 {
 
 
             C_UGUI.S_Get(dragButton).d_Press = delegate (C_UGUI uGUI) {
+                Debug.Log("C_PreviewCard_拖动按下_________________"+ assetsPath);
                 transform.SetSiblingIndex(10000);
                 card.rectTransform.SetSiblingIndex(10000);
                 isDraging = true;
@@ -145,7 +147,7 @@ namespace G12 {
 
 
 
-
+        string assetsPath;
         float radius;
         C_SelectCard.C_Card0 card;
         public void S_Open(C_SelectCard.C_Card0 card, string assetsPath, int assetsType, Vector3 direction, float radius) {
@@ -155,6 +157,7 @@ namespace G12 {
             transform.position = card.rectTransform.position;
             rectTransform.sizeDelta = Vector2.one * radius ;
             name.text = Path.GetFileName(assetsPath);
+            this.assetsPath = assetsPath;
             zoomSize = 1;
             videoImage.texture = null;
             if (assetsType < 10) {

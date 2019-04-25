@@ -45,24 +45,25 @@ namespace G12 {
         }
 
 
-        static RectTransform currentSelectCard;
-        static Vector3 pressPosi, fingerPressPosi;
+        //RectTransform currentSelectCard;
+        Vector3 pressPosi, fingerPressPosi;
         static List<C_Card> selectList = new List<C_Card>();
         static Dictionary<int, C_Card> cardDic = new Dictionary<int, C_Card>();
         public Action<PointerEventData> d_PressEvent, d_LiftEvent, d_DragEvent;
         public void S_PressEvent(PointerEventData pointerEventData) {
             transform.SetSiblingIndex(10000);
-            //Debug.Log("按下_____0");
-            currentSelectCard = rectTransform;
+            Debug.Log("C_Card按下_____" + assetsPathPic);
+            //currentSelectCard = rectTransform;
             fingerPressPosi = pointerEventData.position.S_ToVector3();
-            pressPosi = currentSelectCard.position;
+            pressPosi = rectTransform.position;
             if (d_PressEvent != null) {
                 d_PressEvent(pointerEventData);
             }
             //C_UIBase.Mono.StartCoroutine(I_DragUpdate());
         }
         public void S_LiftEvent(PointerEventData pointerEventData) {
-            currentSelectCard = null;
+            Debug.Log("C_Card抬起_____" + assetsPathPic);
+            //currentSelectCard = null;
             if (d_LiftEvent != null) {
                 d_LiftEvent(pointerEventData);
             }
@@ -72,7 +73,7 @@ namespace G12 {
         }
         public void S_DragEvent(PointerEventData pointerEventData) {
             Vector3 offect = pointerEventData.position.S_ToVector3() - fingerPressPosi;
-            currentSelectCard.position = pressPosi + offect;
+            rectTransform.position = pressPosi + offect;
         }
         static void S_SelectCard(int ii, float basiceSize) {
             if (selectList.Contains(cardDic[ii]) == false) {
@@ -89,19 +90,19 @@ namespace G12 {
 
         public static void S_CloseData() {
             cardDic.Clear();
-            currentSelectCard = null;
+            //currentSelectCard = null;
             for (int i = 0; i < selectList.Count; i++) {
                 selectList[i].S_CancelSelect();
             }
             selectList.Clear();
         }
 
-
+        string assetsPathPic;
         public IEnumerator I_Load(Dictionary<string, int> assetsDic, float basiceSize) {
             this.assetsDic = assetsDic;
             this.basiceSize = basiceSize;
             var assets=  assetsDic.ElementAt(0);
-            string assetsPathPic = assets.Key + ".pic";
+            assetsPathPic = assets.Key + ".pic";
             if (assets.Value < 10) {
                 if (File.Exists(assetsPathPic)) {
                     WWW www = new WWW("file:///" + assetsPathPic);
