@@ -76,7 +76,7 @@ namespace G12 {
         void S_RefreshShow() {
            // screenCardNumberSlider.value= C_Parameter.screenCardNumber;
             selectCardMaxNumberSlider.value = UI_Main.C_Parameter.selectCardMaxNumber.Value;
-            selectRadiusZoomRatioSlider.value = UI_Main.C_Parameter.selectRadiusZoomRatio.Value;
+            selectRadiusZoomRatioSlider.value = (float)UI_Main.C_Parameter.selectRadiusZoomRatio.Value;
             isShowAssetsPathToggle.isSelected = UI_Main.C_Parameter.isShowAssetsPath.Value == 1 ? true : false;
             videoIsAllPlayToggle.isSelected = UI_Main.C_Parameter.videoIsAllPlay.Value == 1 ? true : false;
         }

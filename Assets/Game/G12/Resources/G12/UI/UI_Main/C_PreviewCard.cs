@@ -19,8 +19,8 @@ namespace G12 {
     /// </summary>
     public class C_PreviewCard : MonoBehaviour {
 
-        public static C_ObjectPool<C_PreviewCard> o_ObjectPool = new C_ObjectPool<C_PreviewCard>();
-        public static C_Int4 previewOnlyAssetsPath = new C_Int4(-12, 14, 2, 0);
+        public static C_ObjectPool<C_Int4,C_PreviewCard> o_ObjectPool = new C_ObjectPool<C_Int4,C_PreviewCard>();
+        public static C_Int4 previewOnlyAssetsPath = C_Int4.GetInt4(-12, 14, 2, 0);
         public static void S_InitObjectPool() {
             o_ObjectPool.d_ObjCreateEvent = delegate (C_Int4 onlyAssetsPath) {
                 GameObject backBox = C_128_AssetsCore.GetInstance.S_GetModel(onlyAssetsPath, 10);
@@ -29,9 +29,9 @@ namespace G12 {
                 selectCard.rectTransform.SetParent(o_ObjectPool.ObjectPoolFather);
                 return selectCard;
             };
-            o_ObjectPool.d_ObjRebornEvent = delegate (C_PreviewCard nn) {
-                nn.gameObject.SetActive(true);
-            };
+            //o_ObjectPool.d_ObjRebornEvent = delegate (C_PreviewCard nn) {
+            //    nn.gameObject.SetActive(true);
+            //};
             o_ObjectPool.d_ObjDeathEvent = delegate (C_PreviewCard nn) {
                 nn.gameObject.SetActive(false);
             };

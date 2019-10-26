@@ -83,7 +83,7 @@ namespace G12 {
                     crad0.S_CancelSelect();
                 }
                 selectList.Add(cardDic[ii]);
-                cardDic[ii].S_Select(basiceSize * UI_Main.C_Parameter.selectRadiusZoomRatio.Value);
+                cardDic[ii].S_Select(basiceSize * (float)UI_Main.C_Parameter.selectRadiusZoomRatio.Value);
             }
         }
 

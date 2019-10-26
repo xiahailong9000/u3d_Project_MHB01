@@ -18,8 +18,8 @@ namespace G12 {
     /// </summary>
     public class C_SelectCard : MonoBehaviour {
 
-        public static C_ObjectPool<C_SelectCard> o_ObjectPool = new C_ObjectPool<C_SelectCard>();
-        public static C_Int4 backOnlyAssetsPath = new C_Int4(-12, 14, 1, 0);
+        public static C_ObjectPool<C_Int4,C_SelectCard> o_ObjectPool = new C_ObjectPool<C_Int4,C_SelectCard>();
+        public static C_Int4 backOnlyAssetsPath = C_Int4.GetInt4(-12, 14, 1, 0);
         public static void S_InitObjectPool() {
             o_ObjectPool.d_ObjCreateEvent = delegate (C_Int4 onlyAssetsPath) {
                 GameObject backBox = C_128_AssetsCore.GetInstance.S_GetModel(onlyAssetsPath, 10);
@@ -27,9 +27,9 @@ namespace G12 {
                 selectCard.S_Init();
                 return selectCard;
             };
-            o_ObjectPool.d_ObjRebornEvent = delegate (C_SelectCard nn) {
-                nn.gameObject.SetActive(true);
-            };
+            //o_ObjectPool.d_ObjRebornEvent = delegate (C_SelectCard nn) {
+            //    nn.gameObject.SetActive(true);
+            //};
             o_ObjectPool.d_ObjDeathEvent = delegate (C_SelectCard nn) {
                 nn.transform.SetParent(null);
                 nn.gameObject.SetActive(false);

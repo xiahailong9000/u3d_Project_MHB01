@@ -152,7 +152,7 @@ namespace G12 {
             /// <summary>
             /// 选中照片的放大比例
             /// </summary>
-            public static floatData selectRadiusZoomRatio = new floatData("selectRadiusZoomRatio", 2.4f);
+            public static DoubleData selectRadiusZoomRatio = new DoubleData("selectRadiusZoomRatio", 2.4f);
             /// <summary>
             /// 是否现在资源路径
             /// </summary>
