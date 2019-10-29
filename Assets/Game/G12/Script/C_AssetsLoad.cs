@@ -72,11 +72,13 @@ public class C_AssetsLoad {
         string sourcePath = Application.dataPath + "/../FilePackage";
         List<Dictionary<string, int>> assetsPathDicList = new List<Dictionary<string, int>>();
         DirectoryInfo[] directoryInfos = new DirectoryInfo(sourcePath).GetDirectories("*",SearchOption.AllDirectories);
+        Debug.LogErrorFormat("文件夹数量_____{0}", directoryInfos.Length);
         for (int j = 0; j < directoryInfos.Length; j++) {
+            Debug.LogFormat("文件夹_____{0}", directoryInfos[j]);
             Dictionary<string, int> assetsPathDic = new Dictionary<string, int>();
             FileInfo[] fileInfos = directoryInfos[j].GetFiles("*.*");
             for (int i = 0; i < fileInfos.Length; i++) {
-                // Debug.LogFormat("____{0}____{1}___{2}", fileInfos[i].Name, fileInfos[i].Extension, fileInfos[i].FullName);
+                //Debug.LogFormat("____{0}____{1}___{2}", fileInfos[i].Name, fileInfos[i].Extension, fileInfos[i].FullName);
                 string extension = fileInfos[i].Extension.ToLower();
                 int ii = 0;
                 switch (extension) {
@@ -114,7 +116,7 @@ public class C_AssetsLoad {
                 }
             }
             if (assetsPathDic.Count > 0) {
-                assetsPathDic = assetsPathDic.OrderBy(n => n.Key).ToDictionary(n => n.Key, n => n.Value);
+               // assetsPathDic = assetsPathDic.OrderBy(n => n.Key).ToDictionary(n => n.Key, n => n.Value);
                 assetsPathDicList.Add(assetsPathDic);
             }
         }

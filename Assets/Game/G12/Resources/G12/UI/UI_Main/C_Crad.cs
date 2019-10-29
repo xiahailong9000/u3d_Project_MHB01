@@ -105,10 +105,11 @@ namespace G12 {
             assetsPathPic = assets.Key + ".pic";
             if (assets.Value < 10) {
                 if (File.Exists(assetsPathPic)) {
+                    Debug.LogFormat("加载文件._____{0}", assetsPathPic);
                     WWW www = new WWW("file:///" + assetsPathPic);
                     yield return www;
                     if (www.error != null) {
-                        Debug.LogError(("加载失败__" + assetsPathPic).S_SetColor("ff0000"));
+                        Debug.LogError("加载失败__" + assetsPathPic);
                     } else {
                         rawImage.texture = www.texture;
                         sizeDelta = new Vector2(www.texture.width, www.texture.height) * basiceSize / C_AssetsLoad.thumbnailLenght;
@@ -116,10 +117,11 @@ namespace G12 {
                         SetCapsuleCollider(1);
                     }
                 } else {
+                    Debug.LogErrorFormat("文件找不到._____{0}", assetsPathPic);
                 }
             } else {
                 isPlay = false;
-                Debug.LogFormat("视频___{0}", assets.Key);
+                Debug.LogFormat("加载视频___{0}", assets.Key);
                 videoPlayer = gameObject.AddComponent<VideoPlayer>();
                 videoPlayer.source = VideoSource.Url;
                 videoPlayer.url = "file:///" + assets.Key;

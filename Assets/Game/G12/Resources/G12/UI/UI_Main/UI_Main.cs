@@ -84,7 +84,7 @@ namespace G12 {
         }
         public void S_StartRun() {
             C_AssetsLoad.GetInstance.S_GetAssets(C_UIBase.Mono,delegate(List<Dictionary<string, int>> assetsPathDic) {
-                Debug.Log("资源数量____" + assetsPathDic.Count);
+                Debug.LogErrorFormat("资源数量____" + assetsPathDic.Count);
                // C_Parameter.screenCardNumber = assetsPathDic.Count;
                 S_ResetGame(assetsPathDic);
             });
