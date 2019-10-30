@@ -11,7 +11,8 @@ Packages222/
 Logs/
 Assets/BuildReport/
 Demo_v*
-FilePackage/
+FilePackage
+Assets/_TerrainAutoUpgrade
 
 Assets/StreamingAssets
 
