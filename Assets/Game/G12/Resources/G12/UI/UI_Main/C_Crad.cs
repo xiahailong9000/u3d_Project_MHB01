@@ -182,6 +182,7 @@ namespace G12 {
             GameObject.DestroyImmediate(rigidbody);
             SetCapsuleCollider(radius, true);
             selectCard = C_SelectCard.o_ObjectPool.S_GetObj(C_SelectCard.backOnlyAssetsPath);
+            //Debug.LogErrorFormat("获取卡牌.__________.{0}.____.{1}", selectCard.name, selectCard.GetInstanceID());
             selectCard.S_Open(this, assetsDic, radius);
         }
         public void S_CancelSelect() {

@@ -5,6 +5,8 @@
 Library/
 obj/
 ProjectSettings/
+!ProjectSettings/EditorSettings.asset
+!ProjectSettings/ProjectSettings.asset
 Temp/
 Debug/
 Packages222/

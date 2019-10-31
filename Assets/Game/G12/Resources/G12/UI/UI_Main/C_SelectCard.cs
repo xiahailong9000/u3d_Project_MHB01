@@ -32,6 +32,8 @@ namespace G12 {
             //};
             o_ObjectPool.d_ObjDeathEvent = delegate (C_SelectCard nn) {
                 nn.transform.SetParent(null);
+                //Debug.LogErrorFormat("C_SelectCard.SetActive(false).________{0}", nn.name);
+                //Debug.LogErrorFormat("死亡._______.{0}.____.{1}", nn.name, nn.GetInstanceID());
                 nn.gameObject.SetActive(false);
             };
         }
@@ -45,6 +47,7 @@ namespace G12 {
             rectRoot = GetComponent<RectTransform>();
             boxTransform = transform.Find("box").GetComponent<RectTransform>();
             RectTransform rectTransform =gameObject.transform.Find("video01").GetComponent<RectTransform>();
+            //Debug.LogErrorFormat("C_SelectCard.SetActive(false).________2");
             rectTransform.gameObject.SetActive(false);
             for (int i=0;i< card0s.Length; i++) {
                 card0s[i] = new C_Card0(RectTransform.Instantiate(rectTransform));
@@ -64,6 +67,7 @@ namespace G12 {
         public void S_Open(C_Card father, Dictionary<string, int> assetsDic, float radius) {
             this.father = father;
             this.assetsDic = assetsDic;
+            gameObject.SetActive(true);
             rectRoot.SetParent(father.rectTransform);
             rectRoot.localPosition = Vector3.zero;
             rectRoot.sizeDelta = Vector2.one * radius * 2;
@@ -93,6 +97,7 @@ namespace G12 {
                     float ratio = Mathf.Clamp(radius / (magnitude * 1.5f), 0.1f,1);
                     float ratio2 = Mathf.Clamp(radius / (magnitude * 1.2f), 0.1f, 1);
                     //Debug.LogFormat("___________{0}_____{1}___{2}___{3}___", i, radius, magnitude, ratio2);
+                    //Debug.LogErrorFormat("C_SelectCard.SetActive(true).________3__{0}", name);
                     card.rectTransform.gameObject.SetActive(true);
                     card.rectTransform.sizeDelta = new Vector2(basicsWidth, basicsHeight)* ratio*0.8f;
 
@@ -110,6 +115,7 @@ namespace G12 {
                     showCards[i] = card;
 
                 } else {
+                    //Debug.LogErrorFormat("C_SelectCard.SetActive(false)._______4_{0}", card.rectTransform.gameObject.name);
                     card.rectTransform.gameObject.SetActive(false);
                 }
             }

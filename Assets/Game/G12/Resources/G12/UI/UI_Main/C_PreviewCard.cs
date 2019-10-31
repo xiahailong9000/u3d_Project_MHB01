@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 using CC_Game;
 using CC_Util;
 using UI00;
@@ -33,6 +29,7 @@ namespace G12 {
             //    nn.gameObject.SetActive(true);
             //};
             o_ObjectPool.d_ObjDeathEvent = delegate (C_PreviewCard nn) {
+                //Debug.LogErrorFormat("C_PreviewCard.SetActive(false).________");
                 nn.gameObject.SetActive(false);
             };
         }
@@ -180,6 +177,7 @@ namespace G12 {
             }
             transform.localScale = Vector3.one * 0.3f;
             transform.DOScale(Vector3.one, 0.3f);
+            //Debug.LogErrorFormat("C_PreviewCard.SetActive(false).________");
             line.gameObject.SetActive(false);
             transform.DOMove(transform.position + direction * radius, 0.3f).OnComplete(delegate () {
                 line.gameObject.SetActive(true);
@@ -202,6 +200,7 @@ namespace G12 {
         public void S_Close() {
             transform.localScale = Vector3.one;
             transform.DOScale(Vector3.one*0.3f, 0.3f);
+            //Debug.LogErrorFormat("C_PreviewCard.SetActive(false)._______3_");
             line.gameObject.SetActive(false);
             transform.DOMove(card.rectTransform.position, 0.3f).OnComplete(delegate () {
                 o_ObjectPool.S_SetToDeathObj(previewOnlyAssetsPath, this);
