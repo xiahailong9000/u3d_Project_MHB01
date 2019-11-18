@@ -144,7 +144,7 @@ namespace G12 {
             /// <summary>
             /// 能选中的照片最大数量
             /// </summary>
-            public static LongData selectCardMaxNumber = new LongData("selectCardMaxNumber", 4);
+            public static LongData selectCardMaxNumber = new LongData("selectCardMaxNumber", 2);
             /// <summary>
             /// 屏幕照片最大数量
             /// </summary>
@@ -152,7 +152,7 @@ namespace G12 {
             /// <summary>
             /// 选中照片的放大比例
             /// </summary>
-            public static DoubleData selectRadiusZoomRatio = new DoubleData("selectRadiusZoomRatio", 2.4f);
+            public static DoubleData selectRadiusZoomRatio = new DoubleData("selectRadiusZoomRatio", 1.8f);
             /// <summary>
             /// 是否现在资源路径
             /// </summary>
